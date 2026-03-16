@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlowMetrics SaaS</title>
+  <style>
+    :root{--bg:#0b1020;--sidebar:#0f172a;--panel:#121a2b;--line:rgba(255,255,255,.08);--text:#e8eef9;--muted:#91a0b8;--accent:#60a5fa;--accent2:#22c55e;--shadow:0 20px 60px rgba(0,0,0,.28);--radius:20px}
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
+    body{margin:0;font-family:Inter,Arial,sans-serif;background:radial-gradient(circle at top left, rgba(96,165,250,.12), transparent 24%),radial-gradient(circle at top right, rgba(34,197,94,.08), transparent 18%),linear-gradient(180deg,#090f1d,#060a14 70%);color:var(--text)}
+    button{cursor:pointer;font:inherit} a{text-decoration:none;color:inherit}
+    .app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+    .sidebar{background:linear-gradient(180deg, rgba(255,255,255,.03), transparent 22%),var(--sidebar);border-right:1px solid var(--line);padding:24px 18px;position:sticky;top:0;height:100vh;overflow:auto}
+    .brand{display:flex;align-items:center;gap:14px;padding:8px 8px 20px;border-bottom:1px solid var(--line);margin-bottom:20px}
+    .brand-mark{width:46px;height:46px;border-radius:16px;display:grid;place-items:center;font-weight:900;color:#08111e;background:linear-gradient(135deg,var(--accent),#8cc4ff)}
+    .brand small{display:block;color:var(--muted);margin-top:4px}
+    .menu-label{padding:14px 10px 8px;color:var(--muted);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+    .menu{display:grid;gap:8px}
+    .menu button{border:none;background:transparent;color:var(--muted);text-align:left;padding:13px 14px;border-radius:14px;display:flex;align-items:center;justify-content:space-between}
+    .menu button:hover,.menu button.active{background:rgba(255,255,255,.05);color:var(--text)}
+    .menu button.active{box-shadow:inset 0 0 0 1px rgba(96,165,250,.18)}
+    .sidebar-card{margin-top:22px;padding:18px;border-radius:20px;background:linear-gradient(180deg,rgba(96,165,250,.12),rgba(255,255,255,.02));border:1px solid var(--line)}
+    .sidebar-card p{margin:8px 0 0;color:var(--muted);line-height:1.7}
+    .main{padding:24px}
+    .topbar{display:grid;grid-template-columns:1fr auto auto auto;gap:14px;align-items:center;margin-bottom:22px}
+    .page-title h1{margin:0 0 8px;font-size:2.2rem;letter-spacing:-.04em}
+    .page-title p{margin:0;color:var(--muted);line-height:1.7}
+    .top-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .btn{border:none;padding:13px 16px;border-radius:14px;font-weight:800}
+    .btn-primary{background:var(--accent);color:#06111f}.btn-secondary{background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--text)}.btn-green{background:var(--accent2);color:#04130a}
+    .select,.search{border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text);padding:13px 14px;border-radius:14px;min-width:180px}
+    .search{min-width:240px}
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;margin-bottom:18px}
+    .panel,.kpi,.table-card,.chart-card,.activity-card,.status-card,.segment-card,.modal-box{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.018));border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .panel{padding:24px}.hero h2{margin:0 0 14px;font-size:1.9rem;letter-spacing:-.03em}.hero p{margin:0;color:var(--muted);line-height:1.75}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+    .insight-list{display:grid;gap:12px;margin-top:18px}
+    .insight{padding:14px 16px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid var(--line)}
+    .insight strong{display:block;margin-bottom:6px}
+    .health{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:18px}
+    .health-box{padding:18px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
+    .health-box small{display:block;color:var(--muted);margin-bottom:8px}.health-box strong{font-size:1.3rem}
+    .grid-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:18px}
+    .kpi{padding:20px}.kpi small{display:block;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.07em}.kpi strong{font-size:1.8rem;display:block}
+    .delta{margin-top:12px;font-size:.94rem}.up{color:#7ee0a1}.mid{color:#f9d97b}
+    .dashboard-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}
+    .chart-card,.activity-card,.table-card,.status-card,.segment-card{padding:22px}
+    .chart-card h3,.activity-card h3,.table-card h3,.status-card h3,.segment-card h3{margin:0 0 14px}
+    .fake-chart{height:260px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01)),linear-gradient(180deg,#14233c,#10192c);border:1px solid var(--line);position:relative;overflow:hidden}
+    .bars{position:absolute;left:18px;right:18px;bottom:18px;height:190px;display:grid;grid-template-columns:repeat(8,1fr);gap:12px;align-items:end}
+    .bar{border-radius:14px 14px 8px 8px;background:linear-gradient(180deg,var(--accent),rgba(96,165,250,.28));position:relative}
+    .bar.green{background:linear-gradient(180deg,var(--accent2),rgba(34,197,94,.25))}
+    .bar span{position:absolute;bottom:-26px;left:50%;transform:translateX(-50%);color:var(--muted);font-size:12px}
+    .activity-list,.status-list,.segment-list{display:grid;gap:12px}
+    .activity-item,.status-item,.segment-item{padding:14px 16px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid var(--line)}
+    .activity-item strong,.status-item strong,.segment-item strong{display:block;margin-bottom:6px}
+    .activity-item p,.status-item p,.segment-item p{margin:0;color:var(--muted);line-height:1.65}
+    .table-wrap{overflow:auto} table{width:100%;border-collapse:collapse}
+    th,td{padding:14px 10px;border-bottom:1px solid var(--line);text-align:left}
+    th{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+    .table-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .tag{display:inline-block;padding:7px 10px;border-radius:999px;font-size:12px;font-weight:800}
+    .tag.active{background:rgba(34,197,94,.14);color:#84e5a5;border:1px solid rgba(34,197,94,.26)}
+    .tag.trial{background:rgba(96,165,250,.16);color:#9cc9ff;border:1px solid rgba(96,165,250,.3)}
+    .tag.risk{background:rgba(251,113,133,.15);color:#ff9fb0;border:1px solid rgba(251,113,133,.28)}
+    .footer-note{margin-top:18px;color:var(--muted);line-height:1.7}
+    .toast{position:fixed;right:18px;bottom:18px;z-index:100;background:#0f172a;border:1px solid var(--line);color:var(--text);padding:14px 16px;border-radius:14px;box-shadow:var(--shadow);opacity:0;transform:translateY(10px);transition:.2s}
+    .toast.show{opacity:1;transform:translateY(0)}
+    .modal{position:fixed;inset:0;background:rgba(2,6,23,.74);display:none;place-items:center;padding:20px;z-index:90}
+    .modal.open{display:grid}
+    .modal-box{width:min(720px,100%);padding:24px;background:#0c1425}
+    .modal-box h3{margin:0 0 10px;font-size:1.6rem}.modal-box p{margin:0;color:var(--muted);line-height:1.7}
+    .modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+    .modal-box input,.modal-box select,.modal-box textarea{width:100%;padding:14px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text);font:inherit}
+    .modal-box textarea{min-height:120px;grid-column:1/-1}
+    .modal-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:18px;flex-wrap:wrap}
+    @media (max-width:1180px){.grid-kpis{grid-template-columns:repeat(2,1fr)}.hero,.dashboard-grid{grid-template-columns:1fr}}
+    @media (max-width:900px){.app{grid-template-columns:1fr}.sidebar{position:relative;height:auto}.topbar{grid-template-columns:1fr 1fr}}
+    @media (max-width:640px){.topbar,.modal-grid{grid-template-columns:1fr}.grid-kpis{grid-template-columns:1fr}.health{grid-template-columns:1fr}.main{padding:18px}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark">FM</div><div><strong>FlowMetrics</strong><small>Analytics SaaS Platform</small></div></div>
+      <div class="menu-label">Workspace</div>
+      <div class="menu">
+        <button class="active" onclick="showToast('Visão geral carregada')">Overview <span>01</span></button>
+        <button onclick="scrollToSection('revenueTable')">Receita <span>02</span></button>
+        <button onclick="scrollToSection('activityPanel')">Atividades <span>03</span></button>
+        <button onclick="scrollToSection('segmentsPanel')">Segmentos <span>04</span></button>
+      </div>
+      <div class="menu-label">Operação</div>
+      <div class="menu">
+        <button onclick="openModal('signupModal')">Nova assinatura <span>+</span></button>
+        <button onclick="showToast('Relatório exportado')">Exportar dados <span>PDF</span></button>
+        <button onclick="showToast('Integrações abertas')">Integrações <span>12</span></button>
+      </div>
+      <div class="sidebar-card"><strong>Saúde do produto</strong><p>Este projeto foi desenhado para parecer um SaaS real. Diferente dos anteriores, ele foca em operação, métricas, gestão de clientes, receita recorrente e tomada de decisão.</p></div>
+    </aside>
+    <main class="main">
+      <div class="topbar">
+        <div class="page-title"><h1>Painel operacional</h1><p>Visualização completa de receita, clientes, churn, assinaturas e atividade da plataforma em um único dashboard.</p></div>
+        <input class="search" id="clientSearch" placeholder="Buscar cliente">
+        <select class="select" id="periodSelect"><option value="7">Últimos 7 dias</option><option value="30" selected>Últimos 30 dias</option><option value="90">Últimos 90 dias</option></select>
+        <div class="top-actions"><button class="btn btn-secondary" onclick="toggleThemeMock()">Modo foco</button><button class="btn btn-primary" onclick="applyPeriod()">Aplicar período</button></div>
+      </div>
+      <section class="hero">
+        <div class="panel">
+          <h2>Centro de decisão do produto</h2>
+          <p>O layout deste HTML foi pensado para representar uma ferramenta SaaS de uso diário, com foco em monitoramento, análise de recorrência e visão executiva do negócio.</p>
+          <div class="hero-actions"><button class="btn btn-primary" onclick="openModal('signupModal')">Criar assinatura</button><button class="btn btn-secondary" onclick="showToast('Fluxo de onboarding iniciado')">Iniciar onboarding</button><button class="btn btn-green" onclick="showToast('Resumo executivo gerado')">Gerar resumo</button></div>
+          <div class="insight-list">
+            <div class="insight"><strong>MRR em crescimento</strong>Receita recorrente mensal em expansão com churn controlado no período atual.</div>
+            <div class="insight"><strong>Oportunidade no plano Growth</strong>Segmento com melhor tração comercial e maior taxa de ativação.</div>
+            <div class="insight"><strong>Risco monitorado</strong>Clientes em trial e contas com queda de uso aparecem em destaque.</div>
+          </div>
+        </div>
+        <div class="panel">
+          <h2>Saúde da operação</h2>
+          <p>Bloco lateral com indicadores compactos para reforçar a sensação de produto analítico e contínuo.</p>
+          <div class="health">
+            <div class="health-box"><small>NPS</small><strong id="healthNps">74</strong></div>
+            <div class="health-box"><small>Ativação</small><strong id="healthActivation">82%</strong></div>
+            <div class="health-box"><small>Churn</small><strong id="healthChurn">2,5%</strong></div>
+            <div class="health-box"><small>CSAT</small><strong id="healthCsat">91%</strong></div>
+          </div>
+        </div>
+      </section>
+      <section><div class="grid-kpis">
+        <div class="kpi"><small>MRR</small><strong id="mrrValue">R$ 51.900</strong><div class="delta up" id="mrrDelta">+12,4% no período</div></div>
+        <div class="kpi"><small>Clientes ativos</small><strong id="clientsValue">349</strong><div class="delta up" id="clientsDelta">+25 novas contas</div></div>
+        <div class="kpi"><small>Trial em andamento</small><strong id="trialValue">41</strong><div class="delta mid" id="trialDelta">13 próximos de ativar</div></div>
+        <div class="kpi"><small>Receita anualizada</small><strong id="arrValue">R$ 622.800</strong><div class="delta up" id="arrDelta">Pipeline favorável</div></div>
+      </div></section>
+      <section class="dashboard-grid">
+        <div>
+          <div class="chart-card">
+            <h3>Receita por período</h3>
+            <div class="fake-chart"><div class="bars" id="bars"></div></div>
+            <div class="footer-note">O gráfico simulado reforça o visual de analytics e diferencia este projeto dos demais layouts do portfólio.</div>
+          </div>
+          <div class="table-card" id="revenueTable" style="margin-top:18px">
+            <h3>Assinaturas recentes</h3>
+            <div class="table-wrap"><table><thead><tr><th>Empresa</th><th>Plano</th><th>Status</th><th>MRR</th><th>Ação</th></tr></thead><tbody id="clientTableBody"></tbody></table></div>
+          </div>
+        </div>
+        <div>
+          <div class="activity-card" id="activityPanel"><h3>Atividade da plataforma</h3><div class="activity-list" id="activityList"></div></div>
+          <div class="status-card" style="margin-top:18px"><h3>Status operacional</h3><div class="status-list"><div class="status-item"><strong>Onboarding</strong><p>Fila saudável com tempo médio de configuração abaixo do esperado.</p></div><div class="status-item"><strong>Suporte</strong><p>Volume estável de tickets e boa distribuição por time.</p></div><div class="status-item"><strong>Renovação</strong><p>Contas enterprise com tendência positiva para expansão.</p></div></div></div>
+          <div class="segment-card" id="segmentsPanel" style="margin-top:18px"><h3>Performance por segmento</h3><div class="segment-list"><div class="segment-item"><strong>Growth</strong><p>Plano com maior velocidade de aquisição e boa retenção.</p></div><div class="segment-item"><strong>Starter</strong><p>Entrada de volume, mas com menor ticket e maior sensibilidade a churn.</p></div><div class="segment-item"><strong>Enterprise</strong><p>Menor quantidade de contas, maior peso em receita e expansão contratual.</p></div></div></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div class="modal" id="signupModal"><div class="modal-box"><h3>Nova assinatura</h3><p>Preencha os campos abaixo para simular a criação de uma nova conta no SaaS.</p><div class="modal-grid"><input id="newCompany" placeholder="Empresa"><input id="newOwner" placeholder="Responsável"><select id="newPlan"><option value="">Plano</option><option>Starter</option><option>Growth</option><option>Enterprise</option></select><input id="newMRR" placeholder="MRR estimado"><textarea id="newNotes" placeholder="Observações da conta"></textarea></div><div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal('signupModal')">Cancelar</button><button class="btn btn-primary" onclick="createSubscription()">Criar assinatura</button></div></div></div>
+  <script>
+    const baseData={7:{kpis:{mrr:'R$ 48.200',mrrDelta:'+8,2% no período',clients:'324',clientsDelta:'+18 novas contas',trial:'35',trialDelta:'9 próximos de ativar',arr:'R$ 578.400',arrDelta:'Crescimento constante',nps:'71',activation:'79%',churn:'2,8%',csat:'89%'},bars:[45,60,52,74,68,82,78,88]},30:{kpis:{mrr:'R$ 51.900',mrrDelta:'+12,4% no período',clients:'349',clientsDelta:'+25 novas contas',trial:'41',trialDelta:'13 próximos de ativar',arr:'R$ 622.800',arrDelta:'Pipeline favorável',nps:'74',activation:'82%',churn:'2,5%',csat:'91%'},bars:[50,64,58,80,76,92,86,98]},90:{kpis:{mrr:'R$ 58.400',mrrDelta:'+18,9% no período',clients:'391',clientsDelta:'+42 novas contas',trial:'53',trialDelta:'19 próximos de ativar',arr:'R$ 700.800',arrDelta:'Expansão sólida',nps:'76',activation:'85%',churn:'2,3%',csat:'93%'},bars:[58,70,66,86,82,96,101,110]}};
+    const clients=[{company:'Atlas CRM',plan:'Growth',status:'Ativo',tag:'active',mrr:'R$ 990'},{company:'NeoLog',plan:'Pro',status:'Trial',tag:'trial',mrr:'R$ 0'},{company:'Lume Educação',plan:'Starter',status:'Ativo',tag:'active',mrr:'R$ 290'},{company:'Vita Saúde',plan:'Enterprise',status:'Risco',tag:'risk',mrr:'R$ 2.490'},{company:'Prime Desk',plan:'Growth',status:'Ativo',tag:'active',mrr:'R$ 790'},{company:'Orbital Ops',plan:'Starter',status:'Trial',tag:'trial',mrr:'R$ 0'}];
+    const activities=['14 novas contas criadas nas últimas 24 horas.','Plano Growth concentrou a maior parte das ativações do período.','Duas contas enterprise com expansão em negociação.','Contas em trial com maior engajamento foram priorizadas pelo CS.','Fluxo de onboarding manteve tempo médio abaixo do esperado.'];
+    function showToast(message){const toast=document.createElement('div');toast.className='toast';toast.textContent=message;document.body.appendChild(toast);requestAnimationFrame(()=>toast.classList.add('show'));setTimeout(()=>{toast.classList.remove('show');setTimeout(()=>toast.remove(),220)},2200)}
+    function scrollToSection(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+    function openModal(id){document.getElementById(id).classList.add('open')}
+    function closeModal(id){document.getElementById(id).classList.remove('open')}
+    document.querySelectorAll('.modal').forEach(modal=>modal.addEventListener('click',e=>{if(e.target===modal) modal.classList.remove('open')}))
+    function renderBars(values){const labels=['S1','S2','S3','S4','S5','S6','S7','S8'];document.getElementById('bars').innerHTML=values.map((v,i)=>`<div class="bar ${i % 3 === 0 ? 'green' : ''}" style="height:${v * 1.45}px"><span>${labels[i]}</span></div>`).join('')}
+    function renderTable(){const term=document.getElementById('clientSearch').value.trim().toLowerCase();const body=document.getElementById('clientTableBody');const filtered=clients.filter(item=>item.company.toLowerCase().includes(term)||item.plan.toLowerCase().includes(term)||item.status.toLowerCase().includes(term));body.innerHTML=filtered.map(item=>`<tr><td>${item.company}</td><td>${item.plan}</td><td><span class="tag ${item.tag}">${item.status}</span></td><td>${item.mrr}</td><td><div class="table-actions"><button class="btn btn-secondary" style="padding:8px 12px" onclick="showToast('Conta ${item.company} aberta')">Abrir</button></div></td></tr>`).join('') || '<tr><td colspan="5">Nenhum cliente encontrado.</td></tr>'}
+    function renderActivities(){document.getElementById('activityList').innerHTML=activities.map(item=>`<div class="activity-item"><strong>Atualização</strong><p>${item}</p></div>`).join('')}
+    function applyPeriod(){const period=document.getElementById('periodSelect').value;const data=baseData[period].kpis;document.getElementById('mrrValue').textContent=data.mrr;document.getElementById('mrrDelta').textContent=data.mrrDelta;document.getElementById('clientsValue').textContent=data.clients;document.getElementById('clientsDelta').textContent=data.clientsDelta;document.getElementById('trialValue').textContent=data.trial;document.getElementById('trialDelta').textContent=data.trialDelta;document.getElementById('arrValue').textContent=data.arr;document.getElementById('arrDelta').textContent=data.arrDelta;document.getElementById('healthNps').textContent=data.nps;document.getElementById('healthActivation').textContent=data.activation;document.getElementById('healthChurn').textContent=data.churn;document.getElementById('healthCsat').textContent=data.csat;renderBars(baseData[period].bars);showToast('Período atualizado')}
+    function createSubscription(){const company=document.getElementById('newCompany').value.trim();const owner=document.getElementById('newOwner').value.trim();const plan=document.getElementById('newPlan').value.trim();const mrr=document.getElementById('newMRR').value.trim();const notes=document.getElementById('newNotes').value.trim();if(!company||!owner||!plan||!mrr||!notes){showToast('Preencha todos os campos da nova assinatura');return}closeModal('signupModal');showToast('Nova assinatura criada com sucesso')}
+    function toggleThemeMock(){document.body.style.filter=document.body.style.filter ? '' : 'contrast(1.05) saturate(1.08)';showToast('Modo foco alternado')}
+    document.getElementById('clientSearch').addEventListener('input',renderTable);
+    renderBars(baseData[30].bars);renderTable();renderActivities();
+  </script>
+</body>
+</html>

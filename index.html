@@ -350,6 +350,101 @@
             line-height: 1.7;
         }
 
+        /* IMERSÃO SECTION */
+        .imersao-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .imersao-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 3rem;
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .imersao-select {
+            padding: 1rem 1.5rem;
+            border-radius: 100px;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            font-family: var(--font-body);
+            outline: none;
+            flex-grow: 1;
+            min-width: 250px;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1.5rem center;
+            background-size: 1.2em;
+        }
+
+        .imersao-select:focus {
+            border-color: var(--accent-light);
+            box-shadow: 0 0 0 2px rgba(51, 119, 255, 0.2);
+        }
+        
+        /* IFRAME OVERLAY */
+        #imersao-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--bg-color);
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+        }
+
+        #imersao-iframe {
+            flex-grow: 1;
+            width: 100%;
+            border: none;
+            background: #fff;
+        }
+
+        #imersao-footer {
+            height: 60px;
+            background: var(--surface-color);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 2rem;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
+        }
+
+        .btn-voltar {
+            background: transparent;
+            color: #fff;
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1.5rem;
+            border-radius: 100px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-voltar:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent-light);
+            color: var(--accent-light);
+        }
+
         /* CONTACT SECTION */
         .contact-section {
             padding: 8rem 0;
@@ -528,6 +623,25 @@
             </div>
         </section>
 
+        <!-- IMERSÃO SECTION -->
+        <section id="imersao" class="reveal">
+            <div class="section-header">
+                <h2>Modo <span class="text-accent-gradient">Imersão</span></h2>
+                <p>Experimente nossos layouts na prática. Selecione um dos ambientes em laboratório e inicie a imersão completa.</p>
+            </div>
+            
+            <div class="imersao-container">
+                <div class="imersao-card">
+                    <select id="imersao-select" class="imersao-select">
+                        <option value="01-agencia-web.html">Agência Web (Landing Page)</option>
+                        <option value="02-ecommerce-moda.html">E-commerce de Moda</option>
+                        <option value="03-saas-dashboard.html">Dashboard SaaS</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="startImersao()">Iniciar Imersão</button>
+                </div>
+            </div>
+        </section>
+
         <!-- TEAM SECTION -->
         <section id="coletivo" class="reveal">
             <div class="section-header">
@@ -629,7 +743,47 @@
 
         window.addEventListener('scroll', reveal);
         reveal(); // Trigger on load
+
+        // Imersão Logic
+        function startImersao() {
+            const select = document.getElementById('imersao-select');
+            const iframe = document.getElementById('imersao-iframe');
+            const overlay = document.getElementById('imersao-overlay');
+            
+            iframe.src = select.value;
+            overlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // Try to force focus on iframe for better UX if needed
+            setTimeout(() => {
+                iframe.focus();
+            }, 100);
+        }
+
+        function closeImersao() {
+            const iframe = document.getElementById('imersao-iframe');
+            const overlay = document.getElementById('imersao-overlay');
+            
+            // clear src so it doesn't keep running things in background if possible
+            iframe.src = '';
+            overlay.style.display = 'none';
+            document.body.style.overflow = '';
+        }
     </script>
+    
+    <!-- IFRAME OVERLAY CAIXA DE IMERSÃO -->
+    <div id="imersao-overlay">
+        <iframe id="imersao-iframe" src="" title="Ambiente de Imersão"></iframe>
+        <div id="imersao-footer">
+            <button class="btn-voltar" onclick="closeImersao()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Voltar ao Portfólio
+            </button>
+        </div>
+    </div>
 </body>
 
 </html>

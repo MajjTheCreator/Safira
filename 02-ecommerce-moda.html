@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Urban Wave Store</title>
+  <style>
+    :root{
+      --bg:#f5efe7;
+      --paper:#fffaf4;
+      --panel:#ffffff;
+      --soft:#efe4d8;
+      --line:#e4d5c5;
+      --text:#241b16;
+      --muted:#6c5c50;
+      --accent:#1f2937;
+      --accent-2:#c86b3c;
+      --ok:#2f855a;
+      --shadow:0 18px 40px rgba(54,38,27,.08);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(200,107,60,.08), transparent 24%),
+        linear-gradient(180deg,var(--bg),#f7f1ea 60%);
+    }
+    a{text-decoration:none;color:inherit}
+    button{cursor:pointer;font:inherit}
+    .container{width:min(1220px,92%);margin:0 auto}
+    .topbar{
+      position:sticky;top:0;z-index:50;
+      backdrop-filter:blur(10px);
+      background:rgba(245,239,231,.88);
+      border-bottom:1px solid var(--line);
+    }
+    .topbar-inner{
+      display:grid;grid-template-columns:auto 1fr auto auto;gap:18px;align-items:center;
+      padding:16px 0;
+    }
+    .brand{font-weight:900;letter-spacing:.04em}
+    .nav{
+      display:flex;gap:10px;flex-wrap:wrap;justify-content:center
+    }
+    .nav a,.nav button{
+      padding:10px 14px;border:none;background:transparent;border-radius:12px;color:var(--muted)
+    }
+    .nav a:hover,.nav button:hover{background:var(--paper);color:var(--text)}
+    .search{
+      display:flex;align-items:center;gap:10px;
+      background:var(--paper);border:1px solid var(--line);
+      border-radius:14px;padding:10px 14px;min-width:240px
+    }
+    .search input{
+      border:none;background:transparent;outline:none;width:100%;font:inherit;color:var(--text)
+    }
+    .cart-pill{
+      display:flex;align-items:center;gap:10px;
+      background:var(--accent);color:#fff;padding:12px 16px;border-radius:14px;font-weight:800;border:none
+    }
+    .hero{padding:26px 0 18px}
+    .hero-grid{
+      display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:stretch
+    }
+    .hero-copy,.hero-banner,.card,.feature,.product,.cart-card,.look-card,.promo-card,.newsletter{
+      background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)
+    }
+    .hero-copy{padding:34px}
+    .eyebrow{
+      display:inline-block;padding:8px 12px;border-radius:999px;
+      background:#fff2e8;border:1px solid #f0d2bf;color:var(--accent-2);font-size:13px;font-weight:800
+    }
+    h1{
+      margin:18px 0 14px;font-size:clamp(2.5rem,4vw,4.6rem);line-height:.98;letter-spacing:-.05em;
+      max-width:650px
+    }
+    .hero-copy p{margin:0;color:var(--muted);line-height:1.8;font-size:1.02rem;max-width:640px}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+    .btn{
+      border:none;padding:14px 18px;border-radius:14px;font-weight:800;transition:.18s transform
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn-dark{background:var(--accent);color:#fff}
+    .btn-light{background:var(--paper);border:1px solid var(--line);color:var(--text)}
+    .btn-accent{background:var(--accent-2);color:#fff}
+    .hero-stats{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px
+    }
+    .stat{
+      padding:16px;border-radius:18px;background:var(--paper);border:1px solid var(--line)
+    }
+    .stat small{display:block;color:var(--muted);margin-bottom:8px}
+    .stat strong{font-size:1.15rem}
+    .hero-banner{
+      overflow:hidden;position:relative;padding:0;min-height:100%;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,.6), transparent 20%),
+        linear-gradient(135deg,#ead7c6,#f7ece1 52%,#f1d5c1);
+    }
+    .banner-inner{padding:30px;height:100%;display:flex;flex-direction:column;justify-content:space-between}
+    .sale-badge{
+      align-self:flex-start;background:#fff;border:1px solid var(--line);
+      padding:10px 14px;border-radius:999px;font-weight:800
+    }
+    .fashion-blob{
+      height:280px;border-radius:24px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.32), rgba(255,255,255,.02)),
+        linear-gradient(180deg,#d2aa90,#b97d56);
+      margin-top:18px;position:relative;overflow:hidden
+    }
+    .fashion-blob:before,.fashion-blob:after{
+      content:"";position:absolute;border-radius:999px;background:rgba(255,255,255,.2)
+    }
+    .fashion-blob:before{width:180px;height:180px;left:-30px;top:22px}
+    .fashion-blob:after{width:120px;height:120px;right:20px;bottom:20px}
+    section{padding:18px 0}
+    .section-head{
+      display:flex;justify-content:space-between;gap:16px;align-items:end;margin-bottom:16px
+    }
+    .section-head h2{margin:0;font-size:2rem;letter-spacing:-.04em}
+    .section-head p{margin:0;max-width:620px;color:var(--muted);line-height:1.7}
+    .toolbar{
+      display:grid;grid-template-columns:1.1fr .9fr auto;gap:12px;align-items:center;margin-bottom:16px
+    }
+    .chips{display:flex;gap:10px;flex-wrap:wrap}
+    .chip{
+      border:1px solid var(--line);background:var(--panel);padding:11px 14px;border-radius:999px;color:var(--muted);font-weight:700
+    }
+    .chip.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+    select, input{
+      width:100%;padding:13px 14px;border-radius:14px;border:1px solid var(--line);
+      background:var(--panel);color:var(--text);font:inherit
+    }
+    .products{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:16px
+    }
+    .product{padding:16px;display:flex;flex-direction:column;gap:14px}
+    .product-media{
+      height:220px;border-radius:18px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.4), rgba(255,255,255,.05)),
+        linear-gradient(180deg,#eadfd3,#dcc1aa);
+      border:1px solid #eadccd;
+      position:relative;overflow:hidden
+    }
+    .product-media:after{
+      content:"";position:absolute;inset:auto 18px 14px auto;
+      width:78px;height:78px;border-radius:18px;background:rgba(255,255,255,.24)
+    }
+    .product-top{display:flex;justify-content:space-between;gap:10px;align-items:start}
+    .badge{
+      font-size:12px;font-weight:800;color:var(--accent-2);
+      background:#fff1e6;border:1px solid #f0d1bd;padding:7px 10px;border-radius:999px
+    }
+    .wishlist{
+      width:38px;height:38px;border-radius:12px;border:1px solid var(--line);
+      background:var(--paper)
+    }
+    .product h3{margin:0;font-size:1.06rem}
+    .product p{margin:0;color:var(--muted);line-height:1.65}
+    .price-row{
+      display:flex;justify-content:space-between;align-items:center;gap:12px
+    }
+    .price strong{font-size:1.16rem}
+    .price small{display:block;color:var(--muted);text-decoration:line-through}
+    .actions{display:flex;gap:10px}
+    .actions button{flex:1}
+    .showcase{
+      display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px
+    }
+    .look-card,.promo-card{padding:22px}
+    .look-card{background:linear-gradient(180deg,#fff,#f6ede4)}
+    .promo-card{
+      background:linear-gradient(135deg,#201814,#40302a);
+      color:#fff;border-color:#3d2c25
+    }
+    .promo-card p{color:#d9c7bf}
+    .cart-layout{
+      display:grid;grid-template-columns:1.2fr .8fr;gap:18px
+    }
+    .cart-card{padding:24px}
+    .cart-items{display:grid;gap:12px;margin-top:14px}
+    .cart-item{
+      display:grid;grid-template-columns:74px 1fr auto auto;gap:14px;align-items:center;
+      padding:14px;border-radius:18px;background:var(--paper);border:1px solid var(--line)
+    }
+    .cart-thumb{
+      width:74px;height:74px;border-radius:16px;
+      background:linear-gradient(180deg,#eadfd3,#dcc1aa);border:1px solid #eadccd
+    }
+    .qty-box{
+      display:flex;align-items:center;gap:10px
+    }
+    .qty-box button{
+      width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:#fff
+    }
+    .summary-row{
+      display:flex;justify-content:space-between;gap:16px;padding:10px 0;color:var(--muted)
+    }
+    .summary-row.total{font-size:1.15rem;font-weight:900;color:var(--text);border-top:1px solid var(--line);margin-top:8px;padding-top:14px}
+    .coupon{
+      display:grid;grid-template-columns:1fr auto;gap:10px;margin:16px 0
+    }
+    .feature-grid{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:14px
+    }
+    .feature{padding:18px}
+    .feature h4{margin:0 0 8px}
+    .feature p{margin:0;color:var(--muted);line-height:1.6}
+    .newsletter{
+      padding:26px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center
+    }
+    .newsletter p{margin:8px 0 0;color:var(--muted)}
+    .newsletter-form{
+      display:grid;grid-template-columns:260px auto;gap:10px
+    }
+    .toast{
+      position:fixed;right:18px;bottom:18px;background:#fff;color:var(--text);
+      border:1px solid var(--line);padding:14px 16px;border-radius:14px;box-shadow:var(--shadow);
+      opacity:0;transform:translateY(10px);transition:.2s;z-index:100
+    }
+    .toast.show{opacity:1;transform:translateY(0)}
+    .drawer{
+      position:fixed;top:0;right:-440px;width:min(420px,92vw);height:100vh;background:#fff;
+      border-left:1px solid var(--line);z-index:95;box-shadow:-20px 0 60px rgba(0,0,0,.14);
+      transition:.26s;padding:22px;display:flex;flex-direction:column
+    }
+    .drawer.open{right:0}
+    .drawer-head{
+      display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--line)
+    }
+    .drawer-close{
+      width:40px;height:40px;border-radius:12px;border:1px solid var(--line);background:#fff
+    }
+    .empty{
+      color:var(--muted);padding:20px 0;line-height:1.7
+    }
+    @media (max-width:1100px){
+      .products{grid-template-columns:repeat(3,1fr)}
+      .cart-layout,.hero-grid,.newsletter{grid-template-columns:1fr}
+      .topbar-inner{grid-template-columns:auto 1fr auto}
+      .search{display:none}
+    }
+    @media (max-width:840px){
+      .products,.showcase,.feature-grid{grid-template-columns:repeat(2,1fr)}
+      .toolbar,.newsletter-form{grid-template-columns:1fr}
+      .cart-item{grid-template-columns:74px 1fr}
+    }
+    @media (max-width:620px){
+      .nav{display:none}
+      .products,.showcase,.feature-grid,.hero-stats{grid-template-columns:1fr}
+      .hero-copy,.hero-banner,.cart-card,.look-card,.promo-card,.newsletter,.feature,.product{padding:18px}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">URBAN WAVE</div>
+
+      <nav class="nav">
+        <a href="#catalogo">Catálogo</a>
+        <a href="#colecao">Coleção</a>
+        <a href="#pedido">Carrinho</a>
+        <button onclick="scrollToSection('newsletter')">Clube</button>
+      </nav>
+
+      <div class="search">
+        <span>🔎</span>
+        <input id="searchInput" placeholder="Buscar produto">
+      </div>
+
+      <button class="cart-pill" onclick="toggleDrawer()">
+        <span>🛍️</span>
+        <span id="cartCountTop">0 itens</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Nova coleção cápsula • E-commerce fashion</span>
+          <h1>Uma loja online feita para vender estilo, coleção e desejo.</h1>
+          <p>
+            Este projeto foi reconstruído com uma identidade muito diferente do site de agência.
+            Aqui o foco é vitrine, descoberta de produtos, impulso de compra, ticket médio e experiência de e-commerce.
+          </p>
+
+          <div class="hero-actions">
+            <button class="btn btn-dark" onclick="scrollToSection('catalogo')">Comprar agora</button>
+            <button class="btn btn-light" onclick="aplicarFiltro('novidade')">Ver novidades</button>
+            <button class="btn btn-accent" onclick="showToast('Cupom WAVE10 aplicado em destaque')">Usar cupom destaque</button>
+          </div>
+
+          <div class="hero-stats">
+            <div class="stat"><small>Peças em destaque</small><strong>24 produtos</strong></div>
+            <div class="stat"><small>Frete grátis</small><strong>Acima de R$ 299</strong></div>
+            <div class="stat"><small>Troca facilitada</small><strong>Até 7 dias</strong></div>
+          </div>
+        </div>
+
+        <aside class="hero-banner">
+          <div class="banner-inner">
+            <div class="sale-badge">Drop limitado • até 30% OFF</div>
+            <div>
+              <h3 style="margin:0 0 10px;font-size:1.7rem">Coleção Urban Motion</h3>
+              <p style="margin:0;color:var(--muted);line-height:1.7;max-width:430px">
+                Lançamento de inverno com produtos pensados para criar volume visual, destacar promoções e incentivar compra combinada.
+              </p>
+            </div>
+            <div class="fashion-blob"></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="catalogo">
+      <div class="section-head">
+        <div><h2>Catálogo interativo</h2></div>
+        <p>
+          O layout foi desenhado como uma loja real: busca, filtros, ordenação, favoritos, promoções e carrinho funcional.
+        </p>
+      </div>
+
+      <div class="toolbar">
+        <div class="chips">
+          <button class="chip active" data-filter="all">Todos</button>
+          <button class="chip" data-filter="roupa">Roupas</button>
+          <button class="chip" data-filter="calcado">Calçados</button>
+          <button class="chip" data-filter="novidade">Novidades</button>
+          <button class="chip" data-filter="promocao">Promoções</button>
+        </div>
+
+        <select id="sortSelect">
+          <option value="default">Ordenar por</option>
+          <option value="price-asc">Menor preço</option>
+          <option value="price-desc">Maior preço</option>
+          <option value="name">Nome A-Z</option>
+        </select>
+
+        <button class="btn btn-light" onclick="limparFiltros()">Limpar filtros</button>
+      </div>
+
+      <div class="products" id="productGrid"></div>
+    </section>
+
+    <section id="colecao">
+      <div class="section-head">
+        <div><h2>Blocos promocionais</h2></div>
+        <p>
+          Diferente dos outros projetos, esta página cria contexto de campanha e estimula compra por coleção.
+        </p>
+      </div>
+
+      <div class="showcase">
+        <div class="look-card">
+          <h3 style="margin-top:0">Seleção streetwear</h3>
+          <p style="color:var(--muted);line-height:1.7">
+            Curadoria visual para destacar peças com mais saída e orientar combinações de compra.
+          </p>
+          <button class="btn btn-dark" onclick="aplicarFiltro('roupa')">Explorar roupas</button>
+        </div>
+
+        <div class="look-card">
+          <h3 style="margin-top:0">Linha sneaker</h3>
+          <p style="color:var(--muted);line-height:1.7">
+            Área dedicada a calçados para reforçar ticket médio e facilitar a navegação por categoria.
+          </p>
+          <button class="btn btn-light" onclick="aplicarFiltro('calcado')">Ver calçados</button>
+        </div>
+
+        <div class="promo-card">
+          <h3 style="margin-top:0">Combo de campanha</h3>
+          <p>
+            Adicione 3 itens ao carrinho e ative um cupom promocional para testar a experiência de fechamento.
+          </p>
+          <button class="btn btn-accent" onclick="showToast('Oferta especial destacada')">Ativar oferta</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="pedido">
+      <div class="section-head">
+        <div><h2>Carrinho e checkout simulado</h2></div>
+        <p>
+          Esta área destaca um fluxo mais operacional de e-commerce, com cupom, subtotal e resumo de pedido.
+        </p>
+      </div>
+
+      <div class="cart-layout">
+        <div class="cart-card">
+          <h3 style="margin:0 0 10px">Itens no carrinho</h3>
+          <p style="margin:0;color:var(--muted);line-height:1.7">
+            Adicione produtos acima para visualizar o comportamento do carrinho em tempo real.
+          </p>
+          <div class="cart-items" id="cartItems"></div>
+        </div>
+
+        <aside class="cart-card">
+          <h3 style="margin:0 0 8px">Resumo do pedido</h3>
+          <p style="margin:0;color:var(--muted);line-height:1.7">
+            Simulação de checkout com aplicação de cupom e cálculo dinâmico.
+          </p>
+
+          <div class="coupon">
+            <input id="couponInput" placeholder="Cupom promocional">
+            <button class="btn btn-light" onclick="aplicarCupom()">Aplicar</button>
+          </div>
+
+          <div class="summary-row"><span>Subtotal</span><strong id="subtotalValue">R$ 0,00</strong></div>
+          <div class="summary-row"><span>Desconto</span><strong id="discountValue">R$ 0,00</strong></div>
+          <div class="summary-row"><span>Frete</span><strong id="shippingValue">R$ 0,00</strong></div>
+          <div class="summary-row total"><span>Total</span><strong id="totalValue">R$ 0,00</strong></div>
+
+          <div class="hero-actions" style="margin-top:18px">
+            <button class="btn btn-dark" onclick="finalizarCompra()">Finalizar compra</button>
+            <button class="btn btn-light" onclick="limparCarrinho()">Limpar</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div><h2>Diferenciais da loja</h2></div>
+        <p>
+          Blocos adicionais para reforçar confiança, logística e retenção de clientes no contexto de varejo.
+        </p>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature">
+          <h4>Entrega nacional</h4>
+          <p>Simulação de frete com política simples para aumentar conversão.</p>
+        </div>
+        <div class="feature">
+          <h4>Favoritos</h4>
+          <p>Botões de wishlist para enriquecer a experiência de catálogo.</p>
+        </div>
+        <div class="feature">
+          <h4>Filtro por coleção</h4>
+          <p>Navegação focada em descoberta rápida de peças.</p>
+        </div>
+        <div class="feature">
+          <h4>Campanhas visuais</h4>
+          <p>Seções promocionais separadas da grade de produto.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="newsletter">
+      <div class="newsletter">
+        <div>
+          <h3 style="margin:0">Entre para o clube Urban Wave</h3>
+          <p>Receba lançamentos, cupons e acesso antecipado às próximas coleções.</p>
+        </div>
+        <div class="newsletter-form">
+          <input id="newsletterEmail" placeholder="Seu e-mail">
+          <button class="btn btn-dark" onclick="inscreverNewsletter()">Quero participar</button>
+        </div>
+      </div>
+    </section>
+
+    <div style="padding:24px 0 46px;color:var(--muted)">
+      Urban Wave Store — protótipo de e-commerce com identidade visual, navegação e fluxo de compra próprios.
+    </div>
+  </main>
+
+  <aside class="drawer" id="cartDrawer">
+    <div class="drawer-head">
+      <div>
+        <strong>Mini carrinho</strong>
+        <div style="color:var(--muted);font-size:.94rem;margin-top:4px">Resumo rápido dos itens selecionados</div>
+      </div>
+      <button class="drawer-close" onclick="toggleDrawer()">✕</button>
+    </div>
+    <div id="drawerContent" style="padding-top:18px;overflow:auto"></div>
+  </aside>
+
+  <script>
+    const products = [
+      { id:1, name:'Jaqueta Pulse', category:'roupa', badge:'Novidade', tag:'novidade', price:249.90, oldPrice:299.90, desc:'Peça principal para compor a vitrine da coleção urbana.' },
+      { id:2, name:'Camiseta Axis', category:'roupa', badge:'Essencial', tag:'all', price:89.90, oldPrice:109.90, desc:'Produto de entrada com alto potencial de volume.' },
+      { id:3, name:'Calça Street', category:'roupa', badge:'Promo', tag:'promocao', price:179.90, oldPrice:219.90, desc:'Item com apelo visual para campanhas promocionais.' },
+      { id:4, name:'Tênis Drift', category:'calcado', badge:'Best Seller', tag:'all', price:299.90, oldPrice:349.90, desc:'Calçado destaque com foco em ticket médio.' },
+      { id:5, name:'Tênis Neon', category:'calcado', badge:'Novidade', tag:'novidade', price:339.90, oldPrice:389.90, desc:'Modelo premium para linha de lançamentos.' },
+      { id:6, name:'Moletom Core', category:'roupa', badge:'Promo', tag:'promocao', price:219.90, oldPrice:259.90, desc:'Peça pensada para aumentar o valor do carrinho.' },
+      { id:7, name:'Bota Clay', category:'calcado', badge:'Seleção', tag:'all', price:359.90, oldPrice:429.90, desc:'Opção de maior valor para compor coleção especial.' },
+      { id:8, name:'Camisa Layer', category:'roupa', badge:'Novidade', tag:'novidade', price:149.90, oldPrice:179.90, desc:'Produto versátil com boa aderência em campanha.' }
+    ];
+
+    let currentFilter = 'all';
+    let cart = [];
+    let discount = 0;
+
+    function currency(v){
+      return v.toLocaleString('pt-BR', { style:'currency', currency:'BRL' });
+    }
+
+    function showToast(message){
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      requestAnimationFrame(() => toast.classList.add('show'));
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 220);
+      }, 2200);
+    }
+
+    function scrollToSection(id){
+      document.getElementById(id).scrollIntoView({ behavior:'smooth' });
+    }
+
+    function getFilteredProducts(){
+      const term = document.getElementById('searchInput').value.trim().toLowerCase();
+      let list = [...products];
+
+      if(currentFilter === 'roupa' || currentFilter === 'calcado'){
+        list = list.filter(p => p.category === currentFilter);
+      } else if(currentFilter === 'novidade' || currentFilter === 'promocao'){
+        list = list.filter(p => p.tag === currentFilter);
+      }
+
+      if(term){
+        list = list.filter(p =>
+          p.name.toLowerCase().includes(term) ||
+          p.desc.toLowerCase().includes(term)
+        );
+      }
+
+      const sort = document.getElementById('sortSelect').value;
+      if(sort === 'price-asc') list.sort((a,b) => a.price - b.price);
+      if(sort === 'price-desc') list.sort((a,b) => b.price - a.price);
+      if(sort === 'name') list.sort((a,b) => a.name.localeCompare(b.name));
+
+      return list;
+    }
+
+    function renderProducts(){
+      const grid = document.getElementById('productGrid');
+      const list = getFilteredProducts();
+
+      grid.innerHTML = list.map(product => `
+        <article class="product">
+          <div class="product-media"></div>
+          <div class="product-top">
+            <span class="badge">${product.badge}</span>
+            <button class="wishlist" onclick="favoritar('${product.name}')">♡</button>
+          </div>
+          <div>
+            <h3>${product.name}</h3>
+            <p>${product.desc}</p>
+          </div>
+          <div class="price-row">
+            <div class="price">
+              <small>${currency(product.oldPrice)}</small>
+              <strong>${currency(product.price)}</strong>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn btn-light" onclick="verProduto('${product.name}')">Detalhes</button>
+            <button class="btn btn-dark" onclick="addToCart(${product.id})">Adicionar</button>
+          </div>
+        </article>
+      `).join('') || '<div class="card" style="grid-column:1/-1;padding:24px">Nenhum produto encontrado para o filtro atual.</div>';
+    }
+
+    function setActiveChip(filter){
+      document.querySelectorAll('.chip').forEach(chip => {
+        chip.classList.toggle('active', chip.dataset.filter === filter);
+      });
+    }
+
+    function aplicarFiltro(filter){
+      currentFilter = filter;
+      setActiveChip(filter);
+      renderProducts();
+      scrollToSection('catalogo');
+      showToast('Filtro aplicado: ' + filter);
+    }
+
+    function limparFiltros(){
+      currentFilter = 'all';
+      document.getElementById('searchInput').value = '';
+      document.getElementById('sortSelect').selectedIndex = 0;
+      setActiveChip('all');
+      renderProducts();
+      showToast('Filtros limpos');
+    }
+
+    function favoritar(name){
+      showToast(name + ' adicionado aos favoritos');
+    }
+
+    function verProduto(name){
+      showToast('Visualização rápida de ' + name);
+    }
+
+    function addToCart(id){
+      const product = products.find(p => p.id === id);
+      const existing = cart.find(item => item.id === id);
+      if(existing){
+        existing.qty += 1;
+      } else {
+        cart.push({ ...product, qty:1 });
+      }
+      updateCart();
+      showToast(product.name + ' adicionado ao carrinho');
+    }
+
+    function changeQty(id, delta){
+      const item = cart.find(p => p.id === id);
+      if(!item) return;
+      item.qty += delta;
+      if(item.qty <= 0){
+        cart = cart.filter(p => p.id !== id);
+      }
+      updateCart();
+    }
+
+    function limparCarrinho(){
+      cart = [];
+      discount = 0;
+      document.getElementById('couponInput').value = '';
+      updateCart();
+      showToast('Carrinho limpo');
+    }
+
+    function aplicarCupom(){
+      const code = document.getElementById('couponInput').value.trim().toUpperCase();
+      const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+
+      if(!cart.length){
+        showToast('Adicione itens antes de aplicar um cupom');
+        return;
+      }
+
+      if(code === 'WAVE10'){
+        discount = subtotal * 0.10;
+        showToast('Cupom WAVE10 aplicado');
+      } else if(code === 'FRETEGRATIS'){
+        discount = 0;
+        showToast('Cupom de frete registrado');
+      } else {
+        discount = 0;
+        showToast('Cupom não reconhecido');
+      }
+
+      updateSummary();
+    }
+
+    function updateCart(){
+      const container = document.getElementById('cartItems');
+      const drawer = document.getElementById('drawerContent');
+      const count = cart.reduce((sum, item) => sum + item.qty, 0);
+
+      document.getElementById('cartCountTop').textContent = count + (count === 1 ? ' item' : ' itens');
+
+      if(!cart.length){
+        container.innerHTML = '<div class="card" style="padding:20px;background:var(--paper)">Seu carrinho está vazio.</div>';
+        drawer.innerHTML = '<div class="empty">Nenhum item adicionado até o momento.</div>';
+        updateSummary();
+        return;
+      }
+
+      const markup = cart.map(item => `
+        <div class="cart-item">
+          <div class="cart-thumb"></div>
+          <div>
+            <strong>${item.name}</strong>
+            <div style="color:var(--muted);margin-top:6px">${currency(item.price)}</div>
+          </div>
+          <div class="qty-box">
+            <button onclick="changeQty(${item.id}, -1)">−</button>
+            <strong>${item.qty}</strong>
+            <button onclick="changeQty(${item.id}, 1)">+</button>
+          </div>
+          <strong>${currency(item.price * item.qty)}</strong>
+        </div>
+      `).join('');
+
+      container.innerHTML = markup;
+      drawer.innerHTML = markup;
+      updateSummary();
+    }
+
+    function updateSummary(){
+      const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+      let shipping = subtotal >= 299 || subtotal === 0 ? 0 : 24.90;
+      if(document.getElementById('couponInput').value.trim().toUpperCase() === 'FRETEGRATIS' && subtotal > 0){
+        shipping = 0;
+      }
+      const total = subtotal - discount + shipping;
+
+      document.getElementById('subtotalValue').textContent = currency(subtotal);
+      document.getElementById('discountValue').textContent = '- ' + currency(discount);
+      document.getElementById('shippingValue').textContent = currency(shipping);
+      document.getElementById('totalValue').textContent = currency(total < 0 ? 0 : total);
+    }
+
+    function finalizarCompra(){
+      if(!cart.length){
+        showToast('Adicione produtos antes de finalizar');
+        return;
+      }
+      showToast('Checkout iniciado com sucesso');
+    }
+
+    function inscreverNewsletter(){
+      const email = document.getElementById('newsletterEmail').value.trim();
+      if(!email){
+        showToast('Digite um e-mail válido');
+        return;
+      }
+      showToast('Cadastro realizado no clube Urban Wave');
+      document.getElementById('newsletterEmail').value = '';
+    }
+
+    function toggleDrawer(){
+      document.getElementById('cartDrawer').classList.toggle('open');
+    }
+
+    document.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', () => aplicarFiltro(chip.dataset.filter));
+    });
+
+    document.getElementById('searchInput').addEventListener('input', renderProducts);
+    document.getElementById('sortSelect').addEventListener('change', renderProducts);
+
+    renderProducts();
+    updateCart();
+  </script>
+</body>
+</html>

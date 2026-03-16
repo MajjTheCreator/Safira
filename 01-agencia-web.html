@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaPixel Studio</title>
+  <style>
+    :root{
+      --bg:#07111f;
+      --bg-soft:#0d1b31;
+      --panel:#0b1628;
+      --card:#101f38;
+      --line:rgba(255,255,255,.08);
+      --text:#f4f7fb;
+      --muted:#a9b7cc;
+      --accent:#5eead4;
+      --accent-2:#60a5fa;
+      --danger:#fb7185;
+      --shadow:0 18px 60px rgba(0,0,0,.28);
+      --radius:24px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,Arial,sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(96,165,250,.14), transparent 28%),
+        radial-gradient(circle at top right, rgba(94,234,212,.12), transparent 24%),
+        linear-gradient(180deg,var(--bg),#040b15 70%);
+      color:var(--text);
+    }
+    a{text-decoration:none;color:inherit}
+    button{cursor:pointer;font:inherit}
+    .container{width:min(1200px,92%);margin:0 auto}
+    .topbar{
+      position:sticky;top:0;z-index:50;
+      backdrop-filter:blur(18px);
+      background:rgba(7,17,31,.72);
+      border-bottom:1px solid var(--line);
+    }
+    .topbar-inner{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:16px;padding:18px 0;
+    }
+    .brand{display:flex;align-items:center;gap:14px;font-weight:800;letter-spacing:.02em}
+    .brand-mark{
+      width:42px;height:42px;border-radius:14px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--accent-2),var(--accent));
+      color:#03111f;font-weight:900;
+      box-shadow:0 10px 24px rgba(96,165,250,.25);
+    }
+    nav{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    nav a, nav button{
+      padding:10px 14px;border-radius:12px;border:1px solid transparent;
+      color:var(--muted);background:transparent;
+    }
+    nav a:hover, nav button:hover{background:rgba(255,255,255,.04);color:var(--text);border-color:var(--line)}
+    .hero{padding:56px 0 32px}
+    .hero-grid{
+      display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:stretch;
+    }
+    .hero-copy,.hero-panel,.panel,.card,.timeline-item,.mini-card,.stat-card,.contact-card,.case-card{
+      background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.015));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+    .hero-copy{padding:34px}
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:8px 12px;border-radius:999px;
+      background:rgba(255,255,255,.04);border:1px solid var(--line);
+      color:var(--muted);font-size:13px;font-weight:700;letter-spacing:.02em;
+    }
+    .dot{width:9px;height:9px;border-radius:999px;background:var(--accent)}
+    h1{
+      font-size:clamp(2.4rem,5vw,4.8rem);
+      line-height:1.02;margin:20px 0 18px;
+      letter-spacing:-.04em;
+      max-width:760px;
+    }
+    .hero-copy p{
+      margin:0;max-width:680px;color:var(--muted);
+      font-size:1.06rem;line-height:1.75;
+    }
+    .hero-actions{
+      display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;
+    }
+    .btn{
+      border:none;padding:14px 18px;border-radius:14px;font-weight:800;
+      transition:.2s transform,.2s opacity,.2s background;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn-primary{
+      color:#03111f;background:linear-gradient(135deg,var(--accent),#8bfff0);
+    }
+    .btn-secondary{
+      color:var(--text);background:rgba(255,255,255,.03);border:1px solid var(--line);
+    }
+    .btn-ghost{
+      color:var(--muted);background:transparent;border:1px dashed var(--line);
+    }
+    .hero-foot{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px;
+    }
+    .mini-card{
+      padding:18px;border-radius:20px;background:rgba(255,255,255,.02);
+    }
+    .mini-card strong{display:block;font-size:.84rem;color:var(--muted);margin-bottom:8px}
+    .mini-card span{font-size:1.25rem;font-weight:800}
+    .hero-panel{padding:22px;display:flex;flex-direction:column;gap:18px}
+    .screen{
+      min-height:260px;border-radius:22px;padding:18px;
+      background:
+        linear-gradient(180deg,rgba(96,165,250,.16),rgba(94,234,212,.06)),
+        linear-gradient(180deg,#10203a,#0b1628 72%);
+      border:1px solid rgba(255,255,255,.08);
+      display:flex;flex-direction:column;justify-content:space-between;
+    }
+    .screen-top{display:flex;justify-content:space-between;align-items:center}
+    .screen-bars{display:flex;gap:8px}
+    .screen-bars span{
+      width:10px;height:10px;border-radius:999px;background:rgba(255,255,255,.2)
+    }
+    .metric-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px}
+    .metric-card{
+      padding:16px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)
+    }
+    .metric-card small{display:block;color:var(--muted);margin-bottom:8px}
+    .metric-card strong{font-size:1.4rem}
+    .progress{
+      height:10px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:14px
+    }
+    .progress span{
+      display:block;height:100%;width:72%;
+      background:linear-gradient(90deg,var(--accent-2),var(--accent))
+    }
+    section{padding:26px 0}
+    .section-head{
+      display:flex;justify-content:space-between;gap:16px;align-items:end;margin-bottom:18px
+    }
+    .section-head h2{margin:0;font-size:2rem;letter-spacing:-.03em}
+    .section-head p{margin:0;color:var(--muted);max-width:600px;line-height:1.7}
+    .services{
+      display:grid;grid-template-columns:1.1fr .9fr .9fr;gap:18px
+    }
+    .card{padding:24px}
+    .card h3{margin:0 0 10px;font-size:1.2rem}
+    .card p{margin:0;color:var(--muted);line-height:1.7}
+    .card ul{margin:18px 0 0;padding-left:18px;color:var(--muted);line-height:1.8}
+    .highlight{
+      background:
+        linear-gradient(180deg,rgba(94,234,212,.12),rgba(96,165,250,.05)),
+        rgba(255,255,255,.02);
+    }
+    .process{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:16px
+    }
+    .timeline-item{
+      padding:22px;position:relative;overflow:hidden
+    }
+    .timeline-item:before{
+      content:"";position:absolute;inset:auto -30px -30px auto;width:120px;height:120px;border-radius:999px;
+      background:radial-gradient(circle, rgba(96,165,250,.24), transparent 60%);
+    }
+    .step{
+      width:42px;height:42px;border-radius:14px;
+      display:grid;place-items:center;font-weight:900;
+      background:rgba(255,255,255,.06);border:1px solid var(--line);margin-bottom:16px
+    }
+    .cases-wrap{
+      display:grid;grid-template-columns:1fr 1fr;gap:18px
+    }
+    .case-card{padding:24px}
+    .case-top{
+      display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px
+    }
+    .tag{
+      padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.05);
+      border:1px solid var(--line);color:var(--muted);font-size:.82rem;font-weight:700
+    }
+    .case-metrics{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px
+    }
+    .stat-card{
+      padding:16px;border-radius:18px;background:rgba(255,255,255,.03)
+    }
+    .stat-card small{display:block;color:var(--muted);margin-bottom:8px}
+    .stat-card strong{font-size:1.1rem}
+    .workbench{
+      display:grid;grid-template-columns:1fr 1fr;gap:18px
+    }
+    .panel{padding:24px}
+    .quote-box{
+      display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px
+    }
+    .field, select, textarea, input{
+      width:100%;padding:14px 14px;border-radius:14px;
+      border:1px solid var(--line);background:rgba(255,255,255,.03);
+      color:var(--text);
+    }
+    textarea{min-height:130px;resize:vertical}
+    .result{
+      margin-top:14px;padding:16px;border-radius:18px;
+      background:rgba(255,255,255,.03);border:1px dashed var(--line);color:var(--muted)
+    }
+    .faq{display:grid;gap:12px}
+    .faq-item{
+      border:1px solid var(--line);border-radius:20px;overflow:hidden;background:rgba(255,255,255,.02)
+    }
+    .faq-q{
+      width:100%;text-align:left;border:none;background:transparent;color:var(--text);
+      padding:18px 20px;font-weight:800;display:flex;justify-content:space-between;align-items:center
+    }
+    .faq-a{display:none;padding:0 20px 18px;color:var(--muted);line-height:1.75}
+    .faq-item.open .faq-a{display:block}
+    .contact-grid{
+      display:grid;grid-template-columns:.95fr 1.05fr;gap:18px
+    }
+    .contact-card{padding:24px}
+    .contact-card p{color:var(--muted);line-height:1.75}
+    .contact-list{display:grid;gap:12px;margin-top:18px}
+    .contact-list div{
+      padding:14px 16px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid var(--line)
+    }
+    .footer{padding:30px 0 50px;color:var(--muted)}
+    .toast{
+      position:fixed;right:18px;bottom:18px;z-index:100;
+      background:#0c1729;border:1px solid var(--line);
+      color:var(--text);padding:14px 16px;border-radius:14px;
+      opacity:0;transform:translateY(10px);transition:.22s;
+      box-shadow:var(--shadow);
+    }
+    .toast.show{opacity:1;transform:translateY(0)}
+    .modal{
+      position:fixed;inset:0;display:none;place-items:center;padding:20px;
+      background:rgba(1,5,12,.74);z-index:90;
+    }
+    .modal.open{display:grid}
+    .modal-box{
+      width:min(720px,100%);
+      background:#081323;border:1px solid var(--line);border-radius:28px;
+      padding:24px;box-shadow:var(--shadow)
+    }
+    .modal-box h3{margin:0 0 10px;font-size:1.6rem}
+    .modal-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:18px;flex-wrap:wrap}
+    @media (max-width:1024px){
+      .hero-grid,.services,.cases-wrap,.workbench,.contact-grid{grid-template-columns:1fr}
+      .process{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:720px){
+      nav{display:none}
+      .hero-foot,.metric-grid,.case-metrics,.quote-box,.process{grid-template-columns:1fr}
+      .hero-copy,.hero-panel,.card,.panel,.timeline-item,.case-card,.contact-card{padding:20px}
+      .section-head{flex-direction:column;align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <div class="brand-mark">NP</div>
+        <div>
+          <div>NovaPixel Studio</div>
+          <small style="color:var(--muted);font-weight:600">Digital Agency Platform</small>
+        </div>
+      </div>
+      <nav>
+        <a href="#servicos">Serviços</a>
+        <a href="#processo">Processo</a>
+        <a href="#cases">Cases</a>
+        <a href="#estimativa">Estimativa</a>
+        <button onclick="toggleThemeMock()">Modo apresentação</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow"><span class="dot"></span> Plataforma comercial para agência digital</span>
+          <h1>Um site de agência pensado para vender projetos de alto valor.</h1>
+          <p>
+            Este projeto foi estruturado como uma plataforma institucional premium para agências web.
+            A proposta une posicionamento, prova de capacidade, jornada comercial e qualificação de leads
+            em uma única experiência.
+          </p>
+
+          <div class="hero-actions">
+            <button class="btn btn-primary" onclick="openModal('briefingModal')">Solicitar briefing</button>
+            <button class="btn btn-secondary" onclick="document.getElementById('cases').scrollIntoView({behavior:'smooth'})">Explorar cases</button>
+            <button class="btn btn-ghost" onclick="showToast('Apresentação executiva preparada')">Baixar apresentação</button>
+          </div>
+
+          <div class="hero-foot">
+            <div class="mini-card">
+              <strong>Taxa de qualificação</strong>
+              <span>82%</span>
+            </div>
+            <div class="mini-card">
+              <strong>Tempo médio de proposta</strong>
+              <span>24h</span>
+            </div>
+            <div class="mini-card">
+              <strong>Projetos entregues</strong>
+              <span>+120</span>
+            </div>
+          </div>
+        </div>
+
+        <aside class="hero-panel">
+          <div class="screen">
+            <div class="screen-top">
+              <div class="screen-bars"><span></span><span></span><span></span></div>
+              <span class="tag">Pipeline ativo</span>
+            </div>
+            <div>
+              <h3 style="margin:0 0 10px;font-size:1.5rem">Resumo operacional</h3>
+              <p style="margin:0;color:var(--muted);line-height:1.7">
+                Painel simulado com visão comercial do estúdio, performance das propostas e volume por tipo de projeto.
+              </p>
+            </div>
+            <div class="metric-grid">
+              <div class="metric-card">
+                <small>Websites</small>
+                <strong>46</strong>
+              </div>
+              <div class="metric-card">
+                <small>Landing Pages</small>
+                <strong>31</strong>
+              </div>
+              <div class="metric-card">
+                <small>E-commerces</small>
+                <strong>18</strong>
+              </div>
+              <div class="metric-card">
+                <small>SaaS</small>
+                <strong>9</strong>
+              </div>
+            </div>
+            <div class="progress"><span></span></div>
+          </div>
+
+          <div class="card">
+            <h3>O que torna este HTML diferente</h3>
+            <p>
+              Ao contrário dos outros projetos do portfólio, este arquivo foi desenhado com foco comercial e institucional,
+              priorizando narrativa de agência, prova social, etapas de entrega e captura de briefing.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="servicos">
+      <div class="section-head">
+        <div>
+          <h2>Estrutura de serviços</h2>
+        </div>
+        <p>
+          O site apresenta a agência como uma operação madura. Cada bloco foi pensado para aumentar percepção de valor,
+          reduzir fricção e preparar o visitante para solicitar uma proposta.
+        </p>
+      </div>
+
+      <div class="services">
+        <article class="card highlight">
+          <h3>Website Strategy</h3>
+          <p>
+            Mapeamento de objetivo, funil, proposta de valor, arquitetura de páginas e posicionamento digital antes do design.
+          </p>
+          <ul>
+            <li>Diagnóstico de presença digital</li>
+            <li>Definição de páginas e jornada comercial</li>
+            <li>Estrutura orientada à conversão</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Design & Interface</h3>
+          <p>
+            Construção visual da experiência com identidade sólida, hierarquia de informação e sensação premium.
+          </p>
+          <ul>
+            <li>Layouts responsivos</li>
+            <li>UI para credibilidade e clareza</li>
+            <li>Componentes visuais reutilizáveis</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Content & Lead Capture</h3>
+          <p>
+            Organização de conteúdo, seções comerciais e formulários voltados para briefing, orçamento e pré-venda.
+          </p>
+          <ul>
+            <li>CTAs bem distribuídos</li>
+            <li>Formulários de entrada</li>
+            <li>Seções de cases e argumentos</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="processo">
+      <div class="section-head">
+        <div><h2>Processo de entrega</h2></div>
+        <p>
+          Esta área reforça método e previsibilidade. Em projetos de agência, isso ajuda a vender confiança, não só design.
+        </p>
+      </div>
+
+      <div class="process">
+        <div class="timeline-item">
+          <div class="step">01</div>
+          <h3>Imersão</h3>
+          <p style="color:var(--muted);line-height:1.7;margin:0">Entendimento de negócio, público, oferta e diferencial competitivo.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="step">02</div>
+          <h3>Estrutura</h3>
+          <p style="color:var(--muted);line-height:1.7;margin:0">Arquitetura de páginas, prioridades da jornada e narrativa do site.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="step">03</div>
+          <h3>Produção</h3>
+          <p style="color:var(--muted);line-height:1.7;margin:0">Construção visual, ajustes de conteúdo, testes e revisão comercial.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="step">04</div>
+          <h3>Publicação</h3>
+          <p style="color:var(--muted);line-height:1.7;margin:0">Entrega final, apoio na publicação e acompanhamento inicial de performance.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="cases">
+      <div class="section-head">
+        <div><h2>Cases simulados</h2></div>
+        <p>
+          Cada case destaca cenário, objetivo e resultado. Isso ajuda a transformar o site em uma peça real de venda.
+        </p>
+      </div>
+
+      <div class="cases-wrap">
+        <article class="case-card">
+          <div class="case-top">
+            <div>
+              <h3 style="margin:0 0 8px">Clínica Prisma</h3>
+              <div class="tag">Saúde • Institucional</div>
+            </div>
+            <button class="btn btn-secondary" onclick="showCase('clinica')">Ver detalhes</button>
+          </div>
+          <p style="margin:0;color:var(--muted);line-height:1.7">
+            Projeto com foco em credibilidade, agendamento e fortalecimento da presença local da marca.
+          </p>
+          <div class="case-metrics">
+            <div class="stat-card"><small>Leads</small><strong>+34%</strong></div>
+            <div class="stat-card"><small>Tempo médio</small><strong>-18%</strong></div>
+            <div class="stat-card"><small>Conversão</small><strong>+27%</strong></div>
+          </div>
+        </article>
+
+        <article class="case-card">
+          <div class="case-top">
+            <div>
+              <h3 style="margin:0 0 8px">Grupo Atlas</h3>
+              <div class="tag">B2B • Multiunidade</div>
+            </div>
+            <button class="btn btn-secondary" onclick="showCase('atlas')">Ver detalhes</button>
+          </div>
+          <p style="margin:0;color:var(--muted);line-height:1.7">
+            Reestruturação do site corporativo com organização de soluções, segmentos e geração de oportunidades comerciais.
+          </p>
+          <div class="case-metrics">
+            <div class="stat-card"><small>Páginas</small><strong>+18</strong></div>
+            <div class="stat-card"><small>Taxa de contato</small><strong>+22%</strong></div>
+            <div class="stat-card"><small>CTR</small><strong>+19%</strong></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="estimativa">
+      <div class="section-head">
+        <div><h2>Ferramenta de estimativa</h2></div>
+        <p>
+          Diferente dos demais projetos, este HTML conta com um simulador comercial para triagem inicial.
+        </p>
+      </div>
+
+      <div class="workbench">
+        <div class="panel">
+          <h3 style="margin:0 0 10px">Simular investimento</h3>
+          <p style="margin:0;color:var(--muted);line-height:1.7">
+            Escolha o tipo de projeto para obter uma faixa inicial e entender melhor o porte da demanda.
+          </p>
+
+          <div class="quote-box">
+            <select id="projectType">
+              <option value="">Selecione o tipo</option>
+              <option value="landing">Landing page</option>
+              <option value="site">Site institucional</option>
+              <option value="portal">Portal corporativo</option>
+              <option value="commerce">E-commerce</option>
+            </select>
+            <select id="projectUrgency">
+              <option value="">Prazo estimado</option>
+              <option value="normal">Até 30 dias</option>
+              <option value="medio">Até 20 dias</option>
+              <option value="urgente">Urgente</option>
+            </select>
+          </div>
+
+          <div class="hero-actions" style="margin-top:18px">
+            <button class="btn btn-primary" onclick="estimateProject()">Calcular faixa</button>
+            <button class="btn btn-secondary" onclick="resetEstimate()">Limpar</button>
+          </div>
+
+          <div class="result" id="estimateResult">Selecione as opções para visualizar a estimativa inicial.</div>
+        </div>
+
+        <div class="panel">
+          <h3 style="margin:0 0 10px">FAQ comercial</h3>
+          <div class="faq">
+            <div class="faq-item">
+              <button class="faq-q">Vocês trabalham com conteúdo?<span>+</span></button>
+              <div class="faq-a">Sim. Podemos estruturar a narrativa do site, revisar textos e definir a hierarquia de informação.</div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q">É possível contratar manutenção?<span>+</span></button>
+              <div class="faq-a">Sim. O site pode incluir plano recorrente de melhorias, novos blocos e suporte contínuo.</div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q">A proposta sai rápido?<span>+</span></button>
+              <div class="faq-a">Com um briefing bem preenchido, a estimativa inicial e a proposta comercial podem sair em pouco tempo.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div><h2>Contato e qualificação</h2></div>
+        <p>
+          Encerramento da jornada com coleta de briefing detalhado. Este bloco reforça o objetivo principal do site: gerar oportunidades.
+        </p>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-card">
+          <h3 style="margin:0 0 12px">Resumo do posicionamento</h3>
+          <p>
+            Este projeto representa um site premium para agência digital, com foco em autoridade, método, organização comercial e geração de demanda.
+          </p>
+          <div class="contact-list">
+            <div><strong>Perfil:</strong> agência web, branding ou consultoria digital</div>
+            <div><strong>Objetivo:</strong> captar leads qualificados e apresentar capacidade de entrega</div>
+            <div><strong>Diferencial:</strong> mistura de site institucional com ferramenta comercial</div>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <h3 style="margin:0 0 12px">Enviar briefing</h3>
+          <div class="quote-box">
+            <input id="leadName" placeholder="Nome">
+            <input id="leadEmail" placeholder="E-mail">
+          </div>
+          <div class="quote-box">
+            <input id="leadCompany" placeholder="Empresa">
+            <input id="leadBudget" placeholder="Faixa de investimento">
+          </div>
+          <textarea id="leadMessage" placeholder="Descreva a necessidade do projeto"></textarea>
+          <div class="hero-actions" style="margin-top:16px">
+            <button class="btn btn-primary" onclick="sendLead()">Enviar solicitação</button>
+            <button class="btn btn-secondary" onclick="openModal('briefingModal')">Abrir formulário completo</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      NovaPixel Studio — protótipo de site institucional premium para agência digital.
+    </div>
+  </main>
+
+  <div class="modal" id="briefingModal">
+    <div class="modal-box">
+      <h3>Formulário de briefing</h3>
+      <p style="margin:0 0 18px;color:var(--muted);line-height:1.7">
+        Preencha os campos abaixo para simular a entrada de um lead qualificado na operação da agência.
+      </p>
+
+      <div class="quote-box">
+        <input id="briefingName" placeholder="Nome do responsável">
+        <input id="briefingBusiness" placeholder="Empresa">
+      </div>
+      <div class="quote-box">
+        <input id="briefingEmail" placeholder="E-mail">
+        <select id="briefingType">
+          <option value="">Tipo de projeto</option>
+          <option>Site institucional</option>
+          <option>Landing page</option>
+          <option>E-commerce</option>
+          <option>Portal corporativo</option>
+        </select>
+      </div>
+      <textarea id="briefingDesc" placeholder="Objetivo, escopo e principais necessidades"></textarea>
+
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeModal('briefingModal')">Fechar</button>
+        <button class="btn btn-primary" onclick="submitBriefing()">Enviar briefing</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const toast = (msg) => {
+      const el = document.createElement('div');
+      el.className = 'toast';
+      el.textContent = msg;
+      document.body.appendChild(el);
+      requestAnimationFrame(() => el.classList.add('show'));
+      setTimeout(() => {
+        el.classList.remove('show');
+        setTimeout(() => el.remove(), 220);
+      }, 2200);
+    };
+
+    function showToast(msg){ toast(msg); }
+
+    function openModal(id){
+      const modal = document.getElementById(id);
+      if(modal) modal.classList.add('open');
+    }
+
+    function closeModal(id){
+      const modal = document.getElementById(id);
+      if(modal) modal.classList.remove('open');
+    }
+
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if(e.target === modal) modal.classList.remove('open');
+      });
+    });
+
+    function estimateProject(){
+      const type = document.getElementById('projectType').value;
+      const urgency = document.getElementById('projectUrgency').value;
+      const result = document.getElementById('estimateResult');
+
+      if(!type || !urgency){
+        result.textContent = 'Selecione o tipo de projeto e o prazo estimado.';
+        return;
+      }
+
+      const table = {
+        landing: { normal:'R$ 2.500 a R$ 4.500', medio:'R$ 3.500 a R$ 5.500', urgente:'R$ 4.500 a R$ 7.000' },
+        site: { normal:'R$ 5.000 a R$ 9.000', medio:'R$ 6.500 a R$ 10.500', urgente:'R$ 8.000 a R$ 13.000' },
+        portal: { normal:'R$ 9.000 a R$ 16.000', medio:'R$ 11.000 a R$ 18.000', urgente:'R$ 14.000 a R$ 22.000' },
+        commerce: { normal:'R$ 12.000 a R$ 22.000', medio:'R$ 15.000 a R$ 25.000', urgente:'R$ 18.000 a R$ 30.000' }
+      };
+
+      result.innerHTML = '<strong style="display:block;color:var(--text);margin-bottom:8px">Estimativa inicial</strong>' +
+        'Faixa sugerida: ' + table[type][urgency] +
+        '<br><br>Esta simulação representa uma triagem comercial inicial. O valor final depende de escopo, conteúdo, integrações e prazo.';
+      toast('Estimativa gerada com sucesso');
+    }
+
+    function resetEstimate(){
+      document.getElementById('projectType').selectedIndex = 0;
+      document.getElementById('projectUrgency').selectedIndex = 0;
+      document.getElementById('estimateResult').textContent = 'Selecione as opções para visualizar a estimativa inicial.';
+      toast('Simulação reiniciada');
+    }
+
+    function submitBriefing(){
+      const name = document.getElementById('briefingName').value.trim();
+      const business = document.getElementById('briefingBusiness').value.trim();
+      const email = document.getElementById('briefingEmail').value.trim();
+      const type = document.getElementById('briefingType').value.trim();
+      const desc = document.getElementById('briefingDesc').value.trim();
+
+      if(!name || !business || !email || !type || !desc){
+        toast('Preencha todos os campos do briefing');
+        return;
+      }
+
+      closeModal('briefingModal');
+      toast('Briefing enviado para análise');
+    }
+
+    function sendLead(){
+      const name = document.getElementById('leadName').value.trim();
+      const email = document.getElementById('leadEmail').value.trim();
+      const company = document.getElementById('leadCompany').value.trim();
+      const budget = document.getElementById('leadBudget').value.trim();
+      const message = document.getElementById('leadMessage').value.trim();
+
+      if(!name || !email || !company || !budget || !message){
+        toast('Preencha todos os campos do contato');
+        return;
+      }
+
+      toast('Solicitação comercial enviada');
+    }
+
+    function showCase(name){
+      const messages = {
+        clinica: 'Case Clínica Prisma aberto: foco em credibilidade, agendamento e captação local.',
+        atlas: 'Case Grupo Atlas aberto: foco em soluções B2B e arquitetura multiunidade.'
+      };
+      toast(messages[name] || 'Case aberto');
+    }
+
+    document.querySelectorAll('.faq-q').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.parentElement.classList.toggle('open');
+      });
+    });
+
+    function toggleThemeMock(){
+      document.body.style.filter = document.body.style.filter ? '' : 'contrast(1.02) saturate(1.04)';
+      toast('Modo apresentação alternado');
+    }
+  </script>
+</body>
+</html>
