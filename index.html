@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coletivo SAFIRA | Portfólio</title>
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="Portfólio do Coletivo Safira - Desenvolvedores focados em criar soluções inovadoras através da tecnologia.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            /* Palette: Deep Blue / Black / White / Grey */
+            --bg-color: #03060c;
+            --surface-color: #09101d;
+            --surface-hover: #0c1526;
+            --border-color: rgba(255, 255, 255, 0.05);
+            --accent-primary: #0044cc;
+            --accent-light: #3377ff;
+            --accent-glow: rgba(0, 68, 204, 0.25);
+            --text-primary: #ffffff;
+            --text-secondary: #aaaaaa;
+            --text-muted: #666666;
+            --font-display: 'Syne', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* RESET & BASE */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection {
+            background: var(--accent-primary);
+            color: #fff;
+        }
+
+        /* BACKGROUND EFFECTS */
+        .bg-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            background:
+                radial-gradient(circle at 15% 50%, rgba(0, 68, 204, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(51, 119, 255, 0.04) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        /* TYPOGRAPHY */
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: var(--font-display);
+            font-weight: 700;
+            line-height: 1.1;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #fff 0%, #aaaaaa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .text-accent-gradient {
+            color: var(--accent-light);
+        }
+
+        /* LAYOUT */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        section {
+            padding: 8rem 0;
+            position: relative;
+        }
+
+        /* BUTTONS */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2.5rem;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            background: var(--accent-primary);
+            color: #fff;
+            border: 1px solid var(--accent-light);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-light);
+            box-shadow: 0 10px 30px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #fff;
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent-light);
+            background: rgba(255, 255, 255, 0.02);
+            transform: translateY(-2px);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            color: var(--accent-light);
+            margin-bottom: 1.5rem;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 4rem;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 7vw, 6rem);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
+            animation: fadeUp 1s ease-out forwards;
+            opacity: 0;
+        }
+
+        .hero p {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            animation: fadeUp 1s ease-out 0.2s forwards;
+            opacity: 0;
+            max-width: 600px;
+        }
+
+        .hero .cta-group {
+            animation: fadeUp 1s ease-out 0.4s forwards;
+            opacity: 0;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* PORTFOLIO GRID */
+        .section-header {
+            margin-bottom: 5rem;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 3rem;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .span-8 {
+            grid-column: span 8;
+        }
+
+        .span-4 {
+            grid-column: span 4;
+        }
+
+        .span-12 {
+            grid-column: span 12;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(51, 119, 255, 0.3);
+            background: var(--surface-hover);
+        }
+
+        .project-header {
+            margin-bottom: 2rem;
+        }
+
+        .project-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-desc {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .tech-stack {
+            font-family: 'Inter', monospace;
+            font-size: 0.85rem;
+            color: var(--accent-light);
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* TEAM SECTION */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .member-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .member-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(51, 119, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .member-img-wrapper {
+            width: 100%;
+            aspect-ratio: 1/1;
+            overflow: hidden;
+            position: relative;
+            background: var(--bg-color);
+        }
+
+        .member-img-wrapper::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(to top, var(--surface-color), transparent);
+        }
+
+        .member-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+            filter: grayscale(100%) brightness(0.9);
+        }
+
+        .member-card:hover .member-img {
+            transform: scale(1.05);
+            filter: grayscale(20%) brightness(1);
+        }
+
+        .member-info {
+            padding: 2rem;
+        }
+
+        .member-name {
+            font-size: 1.4rem;
+            margin-bottom: 0.2rem;
+            font-family: var(--font-display);
+        }
+
+        .member-role {
+            font-size: 0.9rem;
+            color: var(--accent-light);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .member-bio {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* CONTACT SECTION */
+        .contact-section {
+            padding: 8rem 0;
+            border-top: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        .contact-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 3rem 0;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .footer-logo {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: #fff;
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* MEDIA QUERIES */
+        @media (max-width: 900px) {
+
+            .span-8,
+            .span-4 {
+                grid-column: span 12;
+            }
+        }
+
+        @media (max-width: 768px) {
+            section {
+                padding: 5rem 0;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .hero-content {
+                text-align: center;
+                margin: 0 auto;
+            }
+
+            .hero .cta-group {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-mesh"></div>
+
+    <main class="container">
+        <!-- HERO -->
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <span class="badge">// Coletivo_Safira</span>
+                <h1 class="text-gradient">Criando soluções através da <span
+                        class="text-accent-gradient">tecnologia</span>.</h1>
+                <p>Nós somos o Coletivo Safira. Um hub de desenvolvedores unidos para projetar, arquitetar e entregar
+                    ecossistemas digitais sólidos, plataformas complexas e experiências eficientes.</p>
+                <div class="cta-group">
+                    <a href="#projetos" class="btn btn-primary">Ver Portfólio</a>
+                    <a href="#coletivo" class="btn btn-outline">Nossa Equipe</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- PORTFOLIO -->
+        <section id="projetos" class="reveal">
+            <div class="section-header">
+                <h2>Experiências <br><span class="text-accent-gradient">Passadas</span></h2>
+                <p>Alguns dos projetos, automações e arquiteturas de sistema desenvolvidos por nós.</p>
+            </div>
+
+            <div class="projects-grid">
+                <!-- Project 1 -->
+                <div class="project-card span-12">
+                    <div class="project-header">
+                        <span class="badge" style="margin-bottom: 1rem; display: inline-block;">Inteligência
+                            Artificial</span>
+                        <h3 class="project-title">CAMADA NEURAL</h3>
+                        <p class="project-desc">Otimização de fluxos de trabalho através de modelos integrados de LLM e
+                            automação generativa, construindo inteligência que atua diretamente nos processos da
+                            empresa.</p>
+                    </div>
+                    <div class="tech-stack">TECH: OpenAI API, LangChain, Python, Vector Databases</div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card span-8">
+                    <div class="project-header">
+                        <span class="badge" style="margin-bottom: 1rem; display: inline-block;">Fintech / Gaming</span>
+                        <h3 class="project-title">TRYSOFT POKEREASY</h3>
+                        <p class="project-desc">Um motor de processamento que lê milhares de logs de mãos
+                            simultaneamente, gerando balanços financeiros precisos e gráficos que orientam a tomada de
+                            decisão de times de poker.</p>
+                    </div>
+                    <div class="tech-stack">TECH: React, Node.js, Highcharts, Integração via API</div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card span-4">
+                    <div class="project-header">
+                        <span class="badge" style="margin-bottom: 1rem; display: inline-block;">Economia</span>
+                        <h3 class="project-title">INVESTCON</h3>
+                        <p class="project-desc">Simulação digital e planejamento financeiro estratégico baseado em
+                            algoritmos de cálculo para viabilidade de crédito e poder de compra.</p>
+                    </div>
+                    <div class="tech-stack">TECH: Vue.js, Google Cloud Functions, Finmath</div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="project-card span-4">
+                    <div class="project-header">
+                        <span class="badge" style="margin-bottom: 1rem; display: inline-block;">Luxo</span>
+                        <h3 class="project-title">LUXETHÉREAL</h3>
+                        <p class="project-desc">E-commerce de alta perfumaria com curadoria de nicho. Focado no
+                            carregamento fluido e na experiência visual premium da jornada do usuário.</p>
+                    </div>
+                    <div class="tech-stack">TECH: Next.js, Framer Motion, Shopify Headless</div>
+                </div>
+
+                <!-- Project 5 -->
+                <div class="project-card span-8">
+                    <div class="project-header">
+                        <span class="badge" style="margin-bottom: 1rem; display: inline-block;">Automação</span>
+                        <h3 class="project-title">BOTS DISCORD</h3>
+                        <p class="project-desc">Ecossistema modular de automação para comunidades e suporte. Robôs
+                            customizados integrando moderação avançada, pagamentos e fluxos completos de IA direto no
+                            chat.</p>
+                    </div>
+                    <div class="tech-stack">TECH: Discord.js, TypeScript, Docker, Redis</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TEAM SECTION -->
+        <section id="coletivo" class="reveal">
+            <div class="section-header">
+                <h2>O Coletivo <span class="text-accent-gradient">Safira</span></h2>
+                <p>Quem projeta e estrutura os códigos por trás das nossas soluções.</p>
+            </div>
+
+            <div class="team-grid">
+                <!-- Member 1 -->
+                <div class="member-card">
+                    <div class="member-img-wrapper">
+                        <!-- Imagem exata da pasta img -->
+                        <img src="img/vinicius.jpeg" alt="Vinicius Ogasawara" class="member-img"
+                            onerror="this.src='https://via.placeholder.com/400x400/111/444?text=Vinicius'">
+                    </div>
+                    <div class="member-info">
+                        <h3 class="member-name">Vinicius Ogasawara</h3>
+                        <div class="member-role">Desenvolvedor e Técnico em Redes</div>
+                        <p class="member-bio">Especialista na base de infraestrutura e conectividade. Assegura que todas
+                            as redes e domínios da aplicação operem com estabilidade, segurança e baixa latência de
+                            servidor.</p>
+                    </div>
+                </div>
+
+                <!-- Member 2 -->
+                <div class="member-card">
+                    <div class="member-img-wrapper">
+                        <!-- Imagem exata da pasta img -->
+                        <img src="img/arthur.jpeg" alt="Arthur S. Major" class="member-img"
+                            onerror="this.src='https://via.placeholder.com/400x400/111/444?text=Arthur'">
+                    </div>
+                    <div class="member-info">
+                        <h3 class="member-name">Arthur S. Major</h3>
+                        <div class="member-role">Desenvolvedor Fullstack & JavaScript</div>
+                        <p class="member-bio">Responsável por orquestrar tanto a lógica limpa de backend quanto as
+                            interfaces dinâmicas em tela, transformando códigos puramente teóricos em sistemas altamente
+                            utilizáveis.</p>
+                    </div>
+                </div>
+
+                <!-- Member 3 -->
+                <div class="member-card">
+                    <div class="member-img-wrapper">
+                        <!-- Imagem exata da pasta img -->
+                        <img src="img/Eduardo.png" alt="Eduardo Wesley Albino" class="member-img"
+                            onerror="this.src='https://via.placeholder.com/400x400/111/444?text=Eduardo'">
+                    </div>
+                    <div class="member-info">
+                        <h3 class="member-name">Eduardo Wesley Albino</h3>
+                        <div class="member-role">Analista de Dados & Eng. de Requisitos</div>
+                        <p class="member-bio">A ponte entre a necessidade do usuário e a arquitetura de banco de dados.
+                            Mapeia regras de negócio e estruturação lógica para que o software cumpra seu verdadeiro
+                            propósito.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section class="contact-section reveal">
+            <div class="contact-flex">
+                <div>
+                    <h2 class="text-gradient" style="font-size: 2.5rem; margin-bottom: 0.5rem;">Fale Conosco</h2>
+                    <p style="color: var(--text-secondary);">Gostou do portfólio? Entre em contato e tire suas dúvidas.
+                    </p>
+                </div>
+                <div>
+                    <a href="https://wa.me/5541988231661" target="_blank" class="btn btn-primary">
+                        Enviar mensagem
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="footer-logo">SAFIRA<span class="text-accent-gradient">.</span></div>
+            <div>STATUS: ONLINE</div>
+            <div>&copy; 2026 Coletivo Safira. Curitiba, PR.</div>
+        </footer>
+    </main>
+
+    <!-- SCRIPTS -->
+    <script>
+        // Scroll Reveal Logic
+        const reveals = document.querySelectorAll('.reveal');
+
+        function reveal() {
+            const windowHeight = window.innerHeight;
+            const elementVisible = 150;
+
+            reveals.forEach((element) => {
+                const elementTop = element.getBoundingClientRect().top;
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', reveal);
+        reveal(); // Trigger on load
+    </script>
+</body>
+
+</html>
